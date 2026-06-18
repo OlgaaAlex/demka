@@ -125,6 +125,7 @@ namespace demka.Pages
             var query = _db.Products
                 .Include(p => p.CategoryNavigation)
                 .Include(p => p.ManufacturerNavigation)
+                .Include(p => p.SupplierNavigation)
                 .AsQueryable();
 
             string search = TbSearch.Text?.ToLower() ?? "";

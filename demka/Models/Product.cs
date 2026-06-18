@@ -43,5 +43,10 @@ namespace demka.Models
 
         public bool IsDiscountGreaterThan15
             => Discount.HasValue && Discount.Value > 15;
+
+        public decimal FinalPrice
+    => ProductPrice * (100 - (Discount ?? 0)) / 100;
+
+        public bool HasDiscount => Discount.HasValue && Discount.Value > 0;
     }
 }

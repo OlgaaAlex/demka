@@ -1,0 +1,107 @@
+﻿<Window x:Class="demka.Pages.AddEditOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Новый заказ" 
+        Height="680" 
+        Width="950"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Основные поля заказа -->
+        <GroupBox Header="Информация о заказе" Grid.Row="0" Margin="0,0,0,15">
+            <Grid Margin="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="220"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Артикул + Количество -->
+                <TextBlock Text="Артикул товара" Margin="0,8,8,4" VerticalAlignment="Center"/>
+                <TextBox x:Name="TbArticul" Grid.Column="1" Margin="0,8" Padding="6" Height="32"/>
+
+                <TextBlock Text="Количество" Grid.Column="2" Margin="20,8,8,4" VerticalAlignment="Center"/>
+                <TextBox x:Name="TbQuantity" Grid.Column="3" Margin="0,8" Padding="6" Height="32" Text="1" Width="80" HorizontalAlignment="Left"/>
+
+                <Button Content="Добавить товар" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" 
+                        Margin="0,6,0,12" Height="34" Click="AddProduct_Click" 
+                        HorizontalAlignment="Left" Width="200"/>
+
+                <!-- Статус и Адрес -->
+                <TextBlock Text="Статус" Grid.Row="2" Margin="0,8,8,4" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CbStatus" Grid.Row="2" Grid.Column="1" Margin="0,8" Height="32" 
+                          DisplayMemberPath="StatusName"/>
+
+                <TextBlock Text="Адрес пункта выдачи" Grid.Row="2" Grid.Column="2" Margin="20,8,8,4" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CbAddress" Grid.Row="2" Grid.Column="3" Margin="0,8" Height="32" 
+                          DisplayMemberPath="AddressName"/>
+
+                <!-- Даты -->
+                <TextBlock Text="Дата заказа" Grid.Row="3" Margin="0,8,8,4" VerticalAlignment="Center"/>
+                <DatePicker x:Name="DpOrderDate" Grid.Row="3" Grid.Column="1" Margin="0,8" Height="32"/>
+
+                <TextBlock Text="Дата выдачи" Grid.Row="3" Grid.Column="2" Margin="20,8,8,4" VerticalAlignment="Center"/>
+                <DatePicker x:Name="DpOrderDateIssue" Grid.Row="3" Grid.Column="3" Margin="0,8" Height="32"/>
+
+                <!-- Код заказа -->
+                <TextBlock Text="Код заказа" Grid.Row="4" Margin="0,8,8,4" VerticalAlignment="Center"/>
+                <TextBox x:Name="TbOrderCode" Grid.Row="4" Grid.Column="1" Margin="0,8" Padding="6" Height="32" 
+                         Width="150" HorizontalAlignment="Left"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Товары в заказе -->
+        <GroupBox Header="Товары в заказе" Grid.Row="1" Margin="0,0,0,12">
+            <DataGrid x:Name="OrderProductsGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserResizeColumns="True" Margin="8" Height="Auto" MinHeight="200" MouseDoubleClick="OrderProductsGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Артикул" Binding="{Binding Product}" Width="110"/>
+                    <DataGridTextColumn Header="Наименование" Binding="{Binding ProductNavigation.ProductName}" Width="280"/>
+                    <DataGridTextColumn Header="Цена" Binding="{Binding ProductNavigation.ProductPrice, StringFormat=N2}" Width="100"/>
+                    <DataGridTextColumn Header="Кол-во" Binding="{Binding OrderProductCount}" Width="80"/>
+                    <DataGridTextColumn Header="Сумма" Binding="{Binding Sum, StringFormat=N2}" Width="110"/>
+                    <DataGridTemplateColumn Header="Действия" Width="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Удалить" Padding="6,3" Click="RemoveProduct_Click"
+                                        Tag="{Binding}" Background="#E53935" Foreground="White" BorderThickness="0"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- Итого -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,15">
+            <TextBlock Text="Итого: " FontWeight="Bold" FontSize="15" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBlock x:Name="TbTotalSum" FontWeight="Bold" FontSize="18" Foreground="#1976D2" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Сохранить" Width="160" Height="38" Margin="8" Click="Save_Click"
+                    Background="#4CAF50" Foreground="White" FontWeight="Bold" FontSize="14"/>
+            <Button Content="Отмена" Width="130" Height="38" Margin="8" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

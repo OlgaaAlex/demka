@@ -139,16 +139,34 @@ namespace demka
             modelBuilder.Entity<Address>().Property(a => a.AddressId).HasColumnName("addressid");
             modelBuilder.Entity<Address>().Property(a => a.AddressName).HasColumnName("addressname");
 
-            // OrderProduct
+            // ==================== OrderProduct ====================
+            modelBuilder.Entity<OrderProduct>().ToTable("orderproduct");
+
+            modelBuilder.Entity<OrderProduct>()
+                .Property(op => op.OrderProductId).HasColumnName("orderproductid");
+
+            modelBuilder.Entity<OrderProduct>()
+    .Property(op => op.OrderId)
+    .HasColumnName("ORDER");        
+
+            modelBuilder.Entity<OrderProduct>()
+                .Property(op => op.Product).HasColumnName("product");
+
+            modelBuilder.Entity<OrderProduct>()
+                .Property(op => op.OrderProductCount).HasColumnName("orderproductcount");
+
+            // Связи
             modelBuilder.Entity<OrderProduct>()
                 .HasOne(op => op.OrderNavigation)
                 .WithMany(o => o.OrderProducts)
-                .HasForeignKey(op => op.OrderId);
+                .HasForeignKey(op => op.OrderId)           // EF будет использовать свойство OrderId
+                .HasPrincipalKey(o => o.OrderId);
 
             modelBuilder.Entity<OrderProduct>()
                 .HasOne(op => op.ProductNavigation)
                 .WithMany(p => p.OrderProducts)
-                .HasForeignKey(op => op.Product);
+                .HasForeignKey(op => op.Product)
+                .HasPrincipalKey(p => p.ProductArticul);
         }
     }
 }
